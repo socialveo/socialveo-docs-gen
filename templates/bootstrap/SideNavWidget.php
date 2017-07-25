@@ -160,7 +160,7 @@ class SideNavWidget extends Widget
                         }
                     }
                 }
-                $items = static::widget([
+                $items = SideNavWidget::widget([
                     'id' => $id,
                     'items' => $items,
                     'encodeLabels' => $this->encodeLabels,
