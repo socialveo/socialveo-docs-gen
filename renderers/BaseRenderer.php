@@ -62,8 +62,8 @@ abstract class BaseRenderer extends Component
     /**
      * creates a link to a type (class, interface or trait)
      * @param ClassDoc|InterfaceDoc|TraitDoc|ClassDoc[]|InterfaceDoc[]|TraitDoc[]|string|string[] $types
-     * @param string $title a title to be used for the link TODO check whether [[yii\...|Class]] is supported
      * @param BaseDoc $context
+     * @param string $title a title to be used for the link TODO check whether [[yii\...|Class]] is supported
      * @param array $options additional HTML attributes for the link.
      * @return string
      */
@@ -77,6 +77,9 @@ abstract class BaseRenderer extends Component
         }
         $links = [];
         foreach ($types as $type) {
+            if ($type == 'self' || $type == 'static') {
+                print_r($context);
+            }
             $postfix = '';
             if (is_string($type)) {
                 if (!empty($type) && substr_compare($type, '[]', -2, 2) === 0) {
@@ -115,21 +118,30 @@ abstract class BaseRenderer extends Component
                     'null',
                     'false',
                     'true',
+                    'Callable',
+                    'double',
                 ];
                 $phpTypeAliases = [
                     'true' => 'boolean',
                     'false' => 'boolean',
                     'bool' => 'boolean',
                     'int' => 'integer',
+                    'double' => 'float',
                 ];
                 $phpTypeDisplayAliases = [
                     'bool' => 'boolean',
                     'int' => 'integer',
+                    'Callable' => 'callable'
                 ];
                 // check if it is PHP internal class
                 if (((class_exists($type, false) || interface_exists($type, false) || trait_exists($type, false)) &&
                     ($reflection = new \ReflectionClass($type)) && $reflection->isInternal())) {
-                    $links[] = $this->generateLink($linkText, 'http://www.php.net/class.' . strtolower(ltrim($type, '\\')), $options) . $postfix;
+                    $type = strtolower(ltrim($type, '\\'));
+                    if (explode('\\', $type)[0] == 'phalcon') {
+                        $links[] = $this->generateLink($linkText, PHALCON_API_URI . $type . '.zep', $options) . $postfix;
+                    } else {
+                        $links[] = $this->generateLink($linkText, 'http://www.php.net/class.' . $type, $options) . $postfix;
+                    }
                 } elseif (in_array($type, $phpTypes)) {
                     if (isset($phpTypeDisplayAliases[$type])) {
                         $linkText = $phpTypeDisplayAliases[$type];
@@ -139,7 +151,28 @@ abstract class BaseRenderer extends Component
                     }
                     $links[] = $this->generateLink($linkText, 'http://www.php.net/language.types.' . strtolower(ltrim($type, '\\')), $options) . $postfix;
                 } else {
-                    $links[] = $type . $postfix;
+                    if (($type == 'self' || $type == 'static') && $context instanceof BaseDoc) {
+                        $linkText = $context->name;
+                        if ($title !== null) {
+                            $linkText = $title;
+                            $title = null;
+                        }
+                        $links[] = $this->generateLink($linkText, $this->generateApiUrl($linkText), $options) . $postfix;
+                    }
+                    else {
+                        if (!($not_supported = in_array($type, ['void', 'mixed'])) && ($link = $this->getClassTypeLink($type))) {
+                            $links[] = $this->generateLink($type, $link, $options) . $postfix;
+                        } else {
+                            if (!$not_supported) {
+                                if ($context instanceof BaseDoc) {
+                                    self::$undefTypes[$context->sourceFile] = $type;
+                                } else {
+                                    self::$undefTypes[] = $type;
+                                }
+                            }
+                            $links[] = $type . $postfix;
+                        }
+                    }
                 }
             } elseif ($type instanceof BaseDoc) {
                 $linkText = $type->name;
@@ -152,6 +185,72 @@ abstract class BaseRenderer extends Component
         }
 
         return implode('|', $links);
+    }
+
+    static $undefTypes = [];
+    static $vendor_types_url = [];
+
+    /**
+     * @param string $type
+     * @return string
+     */
+    public function getClassTypeLink($type)
+    {
+        static $composer;
+
+        if (!isset($composer)) {
+            $composer = json_decode(file_get_contents(__DIR__ . '/../../socialveo/composer.lock'), true);
+            require_once __DIR__ . '/../../socialveo/vendor/autoload.php';
+        }
+
+        if (!isset($composer['packages'])) {
+            return false;
+        }
+
+        if (isset(self::$vendor_types_url[$type])) {
+            return self::$vendor_types_url[$type];
+        }
+
+        if (((class_exists($type) || interface_exists($type) || trait_exists($type)) &&
+            ($reflection = new \ReflectionClass($type)))
+        ) {
+            if (!$reflection) {
+                return false;
+            }
+
+            $path = dirname($primary_path = $reflection->getFileName());
+
+            while (!file_exists($repo_composer = "$path/composer.json")) {
+                if (pathinfo($path, PATHINFO_DIRNAME) == 'vendor') {
+                    return false;
+                }
+                $path = dirname($path);
+            }
+
+            if (!file_exists($repo_composer = "$path/composer.json")) {
+                return false;
+            }
+
+            $relation_path = substr($primary_path, strlen($path));
+            $repo_composer = json_decode(file_get_contents($repo_composer), true);
+
+            if (!$repo_composer || !isset($repo_composer['name'])) {
+                return false;
+            }
+
+            foreach ($composer['packages'] as $package) {
+                if (isset($package['name']) && $package['name'] == $repo_composer['name']) {
+                    if (isset($package['source']) && isset($package['source']['type']) && isset($package['source']['url']) &&
+                        isset($package['source']['reference']) && $package['source']['type'] == 'git' &&
+                        substr($package['source']['url'], 0, strlen('https://github.com')) == 'https://github.com') {
+                        $link = self::$vendor_types_url[$type] = substr($package['source']['url'], 0, -4) . '/blob/' . $package['source']['reference'] . '/' . $relation_path;
+                        return preg_replace('~([^:])//~', '\1/', $link);
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
