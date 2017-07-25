@@ -1,0 +1,171 @@
+@charset "UTF-8";
+body .wrap {
+  margin-top: 0;
+  margin-left: 15px !important;
+  margin-right: 15px !important; }
+  body .wrap > .row {
+    padding-top: 140px; }
+
+body .container {
+  width: 100% !important;
+  max-width: 100% !important; }
+
+body #searchbox {
+  margin: 13px 0 0 0; }
+
+body .col-md-3.searchbox-col {
+  margin: 0 !important;
+  padding: 0 0 0 15px !important; }
+
+body #search-resultbox {
+  top: 81px;
+  margin: 0 22px;
+  font-family: Roboto, sans-serif; }
+
+body #search-results li a:hover, body #search-results li a.selected {
+  background: #44B5F6;
+  color: #fff; }
+
+body #search-results li a span {
+  text-decoration: none;
+  -webkit-transition: none;
+  -moz-transition: none;
+  -o-transition: none;
+  transition: none; }
+
+body .navigation-brand {
+  width: 100%;
+  min-width: 220px;
+  margin-right: 0;
+  margin-top: 0; }
+  body .navigation-brand .brand-logo .logo {
+    height: 50px;
+    margin-top: 5px; }
+
+body #navigation {
+  word-wrap: break-word; }
+  body #navigation .list-group-item.active[data-toogle] {
+    color: #fff;
+    background-color: #337ab7;
+    border-color: #337ab7; }
+  body #navigation .list-group-item.active {
+    color: #fff;
+    background: #44b5f6;
+    border-color: #44b5f6; }
+  body #navigation .list-group-item:focus,
+  body #navigation .list-group-item:hover {
+    color: #fff;
+    background: #44b5f6;
+    border-color: #44b5f6; }
+  body #navigation .list-group-item .caret {
+    border: 0 !important;
+    font-size: 16px;
+    line-height: 19px;
+    position: absolute;
+    right: 8px;
+    width: 14px;
+    text-align: center; }
+    body #navigation .list-group-item .caret:before {
+      content: "—"; }
+  body #navigation .list-group-item.collapsed .caret:before {
+    content: "+"; }
+  body #navigation .list-group-item {
+    border-radius: 0 !important;
+    border-bottom: 0 !important; }
+  body #navigation > .submenu {
+    background-color: #f9f9f9; }
+    body #navigation > .submenu a {
+      background: transparent;
+      padding-left: 30px; }
+    body #navigation > .submenu .submenu a {
+      padding-left: 45px; }
+    body #navigation > .submenu .submenu .submenu a {
+      padding-left: 60px; }
+    body #navigation > .submenu .submenu .submenu .submenu a {
+      padding-left: 75px; }
+    body #navigation > .submenu .submenu .submenu .submenu .submenu a {
+      padding-left: 90px; }
+    body #navigation > .submenu .submenu .submenu .submenu .submenu .submenu a {
+      padding-left: 105px; }
+    body #navigation > .submenu .submenu .submenu .submenu .submenu .submenu .submenu a {
+      padding-left: 120px; }
+    body #navigation > .submenu .submenu .submenu .submenu .submenu .submenu .submenu .submenu a {
+      padding-left: 135px; }
+
+body .navigation-toggle {
+  margin-right: 30px !important; }
+
+body .navbar-inverse.navbar-fixed-top.navbar {
+  display: none !important; }
+
+body .table > thead > tr > th, body .table > thead > tr > td, body .table > tfoot > tr > th, body .table > tfoot > tr > td, body .table > tbody > tr > th, body .table > tbody > tr > td {
+  font-size: 15px;
+  font-weight: 300;
+  padding: 15px 20px; }
+
+body a.tool-link[title="go to top"] {
+  display: none; }
+
+body h1, body h2, body h3, body h4, body h5 {
+  word-break: break-word; }
+
+body h1 {
+  font-size: 45px; }
+
+body h2 {
+  font-size: 40px; }
+
+body h3 {
+  font-size: 35px; }
+
+body h4 {
+  font-size: 30px; }
+
+body h5 {
+  font-size: 25px; }
+
+@media (min-width: 1106px) {
+  body .navigation-brand .brand-logo {
+    width: 100%;
+    /*padding-left: 15px;*/ }
+  body .wrap {
+    margin-left: 30px !important;
+    margin-right: 30px !important; }
+  body .navigation-bar-right {
+    float: left !important; }
+  body .navigation-header .navigation-bar > li {
+    padding: 0;
+    margin: 0 15px; }
+  body #menu-menu-1 {
+    padding: 13px 0 0 0 !important; } }
+
+@media (max-width: 1105px) {
+  body .footer {
+    padding-left: 15px !important;
+    padding-right: 15px !important; }
+  body .navigation-toggle + .col-md-6,
+  body .navigation-toggle + .col-md-9 {
+    width: auto;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 60px; }
+  body #site-navigation {
+    margin-left: -15px;
+    margin-right: -15px; }
+  body .col-md-3.searchbox-col {
+    width: 40%; }
+  body #search-resultbox {
+    margin: 0 15px; }
+  body .navigation-toggle {
+    margin-top: 13px; } }
+
+@media (max-width: 992px) {
+  body .navigation-toggle {
+    margin-top: -47px; }
+  body .col-md-3.searchbox-col {
+    display: none !important; }
+  body #search-resultbox {
+    display: none !important; } }
+
+/*# sourceMappingURL=custom.css.map */
