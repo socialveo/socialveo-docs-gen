@@ -1,6 +1,7 @@
 <?php
 
 use yii\apidoc\templates\bootstrap\ApiRenderer;
+use yii\apidoc\templates\bootstrap\SideNavExtendedWidget;
 use yii\apidoc\templates\bootstrap\SideNavWidget;
 use yii\helpers\StringHelper;
 
@@ -37,7 +38,7 @@ $this->beginContent('@yii/apidoc/templates/bootstrap/layouts/main.php', isset($t
                 'active' => isset($type) && ($class->name == $type->name),
             ];
         } ?>
-        <?= SideNavWidget::widget([
+        <?= SideNavExtendedWidget::widget([
             'id' => 'navigation',
             'items' => $nav,
             'view' => $this,
@@ -64,18 +65,26 @@ $this->beginContent('@yii/apidoc/templates/bootstrap/layouts/main.php', isset($t
 
         return false;
     });
-    /*
-     $(".sourceCode a.show").toggle(function () {
-     $(this).text($(this).text().replace(/show/,'hide'));
-     $(this).parents(".sourceCode").find("div.code").show();
-     },function () {
-     $(this).text($(this).text().replace(/hide/,'show'));
-     $(this).parents(".sourceCode").find("div.code").hide();
-     });
-     $("a.sourceLink").click(function () {
-     $(this).attr('target','_blank');
-     });
-     */
+
+    var openNavigation = function($item) {
+        var $e = $item.parent();
+        if ($e[0] && $e.is(".submenu")) {
+            $e.addClass("in");
+            $e.prev().removeClass("active");
+            openNavigation($e);
+        }
+    }
+
+    $(document).ready(function() {
+        openNavigation($("#navigation .list-group-item.active"));
+        openNavigation($("#navigation .submenu.active"));
+
+        $('.list-group-item[data-toggle="collapse"] + .submenu.collapse').each(function() {
+            if (!$(this).is(".in")) {
+                $(this).prev().addClass("collapsed");
+            }
+        })
+    });
     /*]]>*/
 </script>
 

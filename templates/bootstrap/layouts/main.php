@@ -38,8 +38,54 @@ $this->beginPage();
             echo Html::encode($this->context->pageTitle);
         }
     ?></title>
+
+    <link rel='stylesheet' id='awesome-css' href='https://socialveo.com/wp-content/themes/socialveo/assets/css/lib/font-awesome.min.css' type='text/css' media='all'/>
+    <link rel="stylesheet" id="bootstrap-css" href="https://socialveo.com/wp-content/themes/socialveo/assets/css/lib/bootstrap.min.css?ver=4.1.5" type="text/css" media="all"/>
+    <link rel="stylesheet" id="animations-css" href="https://socialveo.com/wp-content/themes/socialveo/assets/css/lib/animate.css?ver=4.1.5" type="text/css" media="all"/>
+    <link rel="stylesheet" id="main-style-css" href="https://socialveo.com/wp-content/themes/socialveo/style.css?ver=4.1.5" type="text/css" media="all"/>
+
+    <link href="./assets/socialveo/custom.css" rel="stylesheet">
 </head>
 <body>
+
+<header>
+    <nav class="navigation navigation-header site-header" role="banner">
+        <div class="container">
+            <div class="rowx">
+                <div class="col-md-3">
+                    <div class="navigation-brand">
+                        <div class="brand-logo">
+                            <a href="https://socialveo.com/" class="logo"></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 searchbox-col" role="search">
+                    <input id="searchbox" type="text" class="form-control" placeholder="Search">
+                </div>
+                <button class="navigation-toggle visible-sm visible-xs" type="button" data-toggle="dropdown"
+                        data-target=".navigation-navbar"><span class="icon-bar"></span><span
+                        class="icon-bar"></span><span class="icon-bar"></span></button>
+                <div class="col-md-6">
+                    <nav id="site-navigation" class="main-navigation navigation-navbar navigation-bar-right"
+                         role="navigation">
+                        <div class="menu-menu-1-container">
+                            <ul id="menu-menu-1" class="nav-menu navigation-bar navigation-bar-right">
+                                <li class="menu-item"><a href="https://socialveo.com/help/"><i
+                                            class="fa fa-life-ring"></i> Home</a></li>
+                                <li class="menu-item"><a href="https://socialveo.com/go/kb/"><i
+                                            class="fa fa-question-circle"></i> Knowledge Base</a></li>
+                                <li class="menu-item"><a href="https://socialveo.com/help/restapi/"><i
+                                            class="fa fa-code"></i> Rest API</a></li>
+                                <li class="menu-item"><a href="https://socialveo.com/help/docs/"><i
+                                            class="fa fa-file-code-o"></i> Documentation</a></li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
 
 <?php $this->beginBody() ?>
 <div class="wrap">
@@ -79,13 +125,7 @@ $this->beginPage();
         'view' => $this,
         'params' => [],
     ]);
-?>
-<div class="navbar-form navbar-left" role="search">
-  <div class="form-group">
-    <input id="searchbox" type="text" class="form-control" placeholder="Search">
-  </div>
-</div>
-<?php
+
     \yii\apidoc\templates\bootstrap\assets\JsSearchAsset::register($this);
 
     // defer loading of the search index: https://developers.google.com/speed/docs/best-practices/payload?csw=1#DeferLoadingJS

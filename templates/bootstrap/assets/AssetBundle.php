@@ -20,6 +20,10 @@ class AssetBundle extends \yii\web\AssetBundle
     public $sourcePath = '@yii/apidoc/templates/bootstrap/assets/css';
     public $css = [
         'style.css',
+//        'socialveo/custom.css',
+    ];    
+    public $js = [
+        'socialveo/custom.js',
     ];
     public $depends = [
         'yii\web\JqueryAsset',
