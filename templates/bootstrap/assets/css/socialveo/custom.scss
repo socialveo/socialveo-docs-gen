@@ -15,6 +15,7 @@ body {
 
     #searchbox {
         margin: 13px 0 0 0;
+        border: 1px solid #4985cb;
     }
 
     .col-md-3.searchbox-col {
@@ -103,8 +104,17 @@ body {
             border-bottom: 0!important;
         }
 
+        @mixin breakpoint($media, $point) {
+            @media only screen and ($media: $point) {
+                @content;
+            }
+        }
+
         $left: 15px;
         $step: 15px;
+
+        $min-left: 15px;
+        $min-step: 10px;
 
         > .submenu {
             //background-color: rgba(0,0,0,0.015);
@@ -112,43 +122,75 @@ body {
             a {
                 background: transparent;
                 $left: $left + $step;
+                $min-left: $min-left + $min-step;
                 padding-left: $left;
+                @include breakpoint(max-width, 1220px) {
+                    padding-left: $min-left;
+                }
             }
             .submenu {
-                //background-color: rgba(0,0,0,0.02);
+                background-color: rgba(0,0,0,0.03);
                 a {
                     $left: $left + $step;
+                    $min-left: $min-left + $min-step;
                     padding-left: $left;
+                    @include breakpoint(max-width, 1220px) {
+                        padding-left: $min-left;
+                    }
                 }
                 .submenu {
                     a {
                         $left: $left + $step;
+                        $min-left: $min-left + $min-step;
                         padding-left: $left;
+                        @include breakpoint(max-width, 1220px) {
+                            padding-left: $min-left;
+                        }
                     }
                     .submenu {
                         a {
                             $left: $left + $step;
+                            $min-left: $min-left + $min-step;
                             padding-left: $left;
+                            @include breakpoint(max-width, 1220px) {
+                                padding-left: $min-left;
+                            }
                         }
                         .submenu {
                             a {
                                 $left: $left + $step;
+                                $min-left: $min-left + $min-step;
                                 padding-left: $left;
+                                @include breakpoint(max-width, 1220px) {
+                                    padding-left: $min-left;
+                                }
                             }
                             .submenu {
                                 a {
                                     $left: $left + $step;
+                                    $min-left: $min-left + $min-step;
                                     padding-left: $left;
+                                    @include breakpoint(max-width, 1220px) {
+                                        padding-left: $min-left;
+                                    }
                                 }
                                 .submenu {
                                     a {
                                         $left: $left + $step;
+                                        $min-left: $min-left + $min-step;
                                         padding-left: $left;
+                                        @include breakpoint(max-width, 1220px) {
+                                            padding-left: $min-left;
+                                        }
                                     }
                                     .submenu {
                                         a {
                                             $left: $left + $step;
+                                            $min-left: $min-left + $min-step;
                                             padding-left: $left;
+                                            @include breakpoint(max-width, 1220px) {
+                                                padding-left: $min-left;
+                                            }
                                         }
                                     }
                                 }
@@ -180,9 +222,9 @@ body {
         }
     }
 
-    a.tool-link[title="go to top"] {
-        display: none;
-    }
+    //a.tool-link[title="go to top"] {
+    //    display: none;
+    //}
 
     h1, h2, h3, h4, h5 {
         word-break: break-word;
@@ -231,6 +273,10 @@ body {
             padding: 13px 0 0 0 !important;
         }
     }
+}
+
+.footer {
+    padding: 20px 30px!important;
 }
 
 @media (max-width: 1105px) {

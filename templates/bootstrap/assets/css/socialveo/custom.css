@@ -11,7 +11,8 @@ body .container {
   max-width: 100% !important; }
 
 body #searchbox {
-  margin: 13px 0 0 0; }
+  margin: 13px 0 0 0;
+  border: 1px solid #4985cb; }
 
 body .col-md-3.searchbox-col {
   margin: 0 !important;
@@ -77,20 +78,46 @@ body #navigation {
     body #navigation > .submenu a {
       background: transparent;
       padding-left: 30px; }
-    body #navigation > .submenu .submenu a {
-      padding-left: 45px; }
-    body #navigation > .submenu .submenu .submenu a {
-      padding-left: 60px; }
-    body #navigation > .submenu .submenu .submenu .submenu a {
-      padding-left: 75px; }
-    body #navigation > .submenu .submenu .submenu .submenu .submenu a {
-      padding-left: 90px; }
-    body #navigation > .submenu .submenu .submenu .submenu .submenu .submenu a {
-      padding-left: 105px; }
-    body #navigation > .submenu .submenu .submenu .submenu .submenu .submenu .submenu a {
-      padding-left: 120px; }
-    body #navigation > .submenu .submenu .submenu .submenu .submenu .submenu .submenu .submenu a {
-      padding-left: 135px; }
+      @media only screen and (max-width: 1220px) {
+        body #navigation > .submenu a {
+          padding-left: 25px; } }
+    body #navigation > .submenu .submenu {
+      background-color: rgba(0, 0, 0, 0.03); }
+      body #navigation > .submenu .submenu a {
+        padding-left: 45px; }
+        @media only screen and (max-width: 1220px) {
+          body #navigation > .submenu .submenu a {
+            padding-left: 35px; } }
+      body #navigation > .submenu .submenu .submenu a {
+        padding-left: 60px; }
+        @media only screen and (max-width: 1220px) {
+          body #navigation > .submenu .submenu .submenu a {
+            padding-left: 45px; } }
+      body #navigation > .submenu .submenu .submenu .submenu a {
+        padding-left: 75px; }
+        @media only screen and (max-width: 1220px) {
+          body #navigation > .submenu .submenu .submenu .submenu a {
+            padding-left: 55px; } }
+      body #navigation > .submenu .submenu .submenu .submenu .submenu a {
+        padding-left: 90px; }
+        @media only screen and (max-width: 1220px) {
+          body #navigation > .submenu .submenu .submenu .submenu .submenu a {
+            padding-left: 65px; } }
+      body #navigation > .submenu .submenu .submenu .submenu .submenu .submenu a {
+        padding-left: 105px; }
+        @media only screen and (max-width: 1220px) {
+          body #navigation > .submenu .submenu .submenu .submenu .submenu .submenu a {
+            padding-left: 75px; } }
+      body #navigation > .submenu .submenu .submenu .submenu .submenu .submenu .submenu a {
+        padding-left: 120px; }
+        @media only screen and (max-width: 1220px) {
+          body #navigation > .submenu .submenu .submenu .submenu .submenu .submenu .submenu a {
+            padding-left: 85px; } }
+      body #navigation > .submenu .submenu .submenu .submenu .submenu .submenu .submenu .submenu a {
+        padding-left: 135px; }
+        @media only screen and (max-width: 1220px) {
+          body #navigation > .submenu .submenu .submenu .submenu .submenu .submenu .submenu .submenu a {
+            padding-left: 95px; } }
 
 body .navigation-toggle {
   margin-right: 30px !important; }
@@ -102,9 +129,6 @@ body .table > thead > tr > th, body .table > thead > tr > td, body .table > tfoo
   font-size: 15px;
   font-weight: 300;
   padding: 15px 20px; }
-
-body a.tool-link[title="go to top"] {
-  display: none; }
 
 body h1, body h2, body h3, body h4, body h5 {
   word-break: break-word; }
@@ -138,6 +162,9 @@ body h5 {
     margin: 0 15px; }
   body #menu-menu-1 {
     padding: 13px 0 0 0 !important; } }
+
+.footer {
+  padding: 20px 30px !important; }
 
 @media (max-width: 1105px) {
   body .footer {
