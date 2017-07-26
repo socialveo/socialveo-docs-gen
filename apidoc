@@ -8,13 +8,18 @@
  * @license http://www.yiiframework.com/license/
  */
 
-defined('YII_DEBUG') or define('YII_DEBUG', false);
+defined('YII_DEBUG') or define('YII_DEBUG', true);
 
 define('PHALCON_VERSION', \Phalcon\Version::get());
 define('PHALCON_VERSION_MAJOR', explode('.', PHALCON_VERSION)[0]);
 define('PHALCON_VERSION_MINOR', explode('.', PHALCON_VERSION)[1]);
 define('PHALCON_TAG', (PHALCON_VERSION_MAJOR == 2 ? 'phalcon-v' : 'v') . PHALCON_VERSION);
 define('PHALCON_API_URI', 'https://github.com/phalcon/cphalcon/blob/' . PHALCON_TAG . '/');
+
+try {
+    require './../socialveo/socialveo/console.php';
+} catch (\Exception $e) {
+}
 
 $composerAutoload = [
     __DIR__ . '/vendor/autoload.php', // standalone with "composer install" run
