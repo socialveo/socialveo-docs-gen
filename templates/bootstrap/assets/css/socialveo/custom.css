@@ -6,6 +6,21 @@ body .wrap {
   body .wrap > .row {
     padding-top: 140px; }
 
+body pre > code.language-json {
+  overflow: hidden;
+  white-space: pre; }
+
+body span.p {
+  line-height: 34px;
+  display: block;
+  font-size: 16px; }
+  body span.p > strong {
+    font-weight: bold; }
+
+body code.hljs.api {
+  font-size: 18px;
+  margin-bottom: 13px; }
+
 body .container {
   width: 100% !important;
   max-width: 100% !important; }
@@ -43,8 +58,14 @@ body .navigation-brand {
     height: 50px;
     margin-top: 5px; }
 
+body .alert {
+  padding: 15px 10px;
+  border-radius: 4px;
+  margin-bottom: 15px; }
+
 body #navigation {
-  word-wrap: break-word; }
+  word-wrap: break-word;
+  border-bottom: 2px solid #ddd; }
   body #navigation .list-group-item.active[data-toogle] {
     color: #fff;
     background-color: #337ab7;

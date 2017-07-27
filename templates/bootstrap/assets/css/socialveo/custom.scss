@@ -8,6 +8,25 @@ body {
         }
     }
 
+    pre > code.language-json {
+        overflow: hidden;
+        white-space: pre;
+    }
+
+    span.p {
+        line-height: 34px;
+        display: block;
+        font-size: 16px;
+        > strong {
+            font-weight: bold;
+        }
+    }
+
+    code.hljs.api {
+        font-size: 18px;
+        margin-bottom: 13px;
+    }
+
     .container {
         width: 100% !important;
         max-width: 100% !important;
@@ -56,8 +75,15 @@ body {
         }
     }
 
+    .alert {
+        padding:15px 10px;
+        border-radius: 4px;
+        margin-bottom: 15px;
+    }
+
     #navigation {
         word-wrap: break-word;
+        border-bottom: 2px solid #ddd;
 
         .list-group-item.active[data-toogle] {
             color: #fff;
