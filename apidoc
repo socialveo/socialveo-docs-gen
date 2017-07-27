@@ -66,4 +66,7 @@ $exitCode = $application->run();
 $undef = /*array_unique*/(\yii\apidoc\renderers\BaseRenderer::$undefTypes);
 file_put_contents(__DIR__ . '/../undef-types.txt', print_r($undef, true));
 
+$notices = /*array_unique*/(\yii\apidoc\helpers\ApiMarkdown::$notices);
+file_put_contents(__DIR__ . '/../api-notices.txt', print_r($notices, true));
+
 exit($exitCode);
