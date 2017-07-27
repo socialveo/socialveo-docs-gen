@@ -8,6 +8,7 @@
 namespace yii\apidoc\helpers;
 
 use cebe\markdown\GithubMarkdown;
+use yii\apidoc\models\ClassDoc;
 use yii\apidoc\models\TypeDoc;
 use yii\apidoc\renderers\BaseRenderer;
 use yii\helpers\Html;
@@ -35,6 +36,7 @@ class ApiMarkdown extends GithubMarkdown
      */
     public static $blockTranslations = [];
 
+    /** @var  ClassDoc */
     protected $renderingContext;
     protected $headings = [];
 
@@ -57,11 +59,320 @@ class ApiMarkdown extends GithubMarkdown
         $this->headings = [];
     }
 
-    public function parse($text)
+    public function parseModels(&$text)
     {
+        $text = preg_replace_callback('/(?:^|\n)([a-z\s]+):/isxSX', function($m) {
+            return $this->getModelLink($m[1]);
+        }, $text);
+    }
+
+    private function linkTo($block)
+    {
+        return '<a href="' . htmlspecialchars($block['url'], ENT_COMPAT | ENT_HTML401, 'UTF-8') . '"'
+        . (empty($block['text']) ? '' : ' title="' . htmlspecialchars($block['text'], ENT_COMPAT | ENT_HTML401 | ENT_SUBSTITUTE, 'UTF-8') . '"')
+        . '>' . $block['text'] . '</a>';
+    }
+
+    public function getModelLink($match)
+    {
+        $model = \Socialveo\Core\models\SocialveoModel::getModel($match);
+        if (!$model || !class_exists($model)) {
+            return $match;
+        }
+        $link = '/socialveo-docs/docs/core/' . implode('-', explode('\\', strtolower(trim($model, '\\')))) . '.html';
+        $l = $this->linkTo(['url' => $link, 'text' => $match]);
+        return $l;
+    }
+
+    public function parseLinks2ModelsInline($text)
+    {
+        $text = preg_replace_callback('/{([A-Z][a-z]+[A-Za-z]+)}/sxSX', function($m) {
+            return $this->getModelLink($m[1]);
+        }, $text);
+
+        return $text;
+    }
+
+    public function parseLink2Model($text, &$data)
+    {
+        $text = preg_replace_callback('/([a-z]+)/isxSX', function($m) {
+            return $this->getModelLink($m[0]);
+        }, $text);
+
+        $text = preg_replace_callback('/<[^>\/]*>[^<]*<\/[^>]*>/isxSX', function($m) use (&$data) {
+            $key = '$$$' . sprintf('%02d', count($data)) . '$$$';
+            $data[$key] = $m[0];
+            return $key  . "\n\n";
+        }, $text);
+
+        return $text;
+    }
+
+    private function getRouterConfig()
+    {
+        static $routes;
+
+        if (!isset($routes)) {
+            $filename = SOCIALVEO_WEBAPI_DIR . '/config/router.php';
+            $file = file_get_contents($filename);
+
+            if (preg_match('/(\$routes\s*\=\s*\[.*\]\s*;)/isxSX', $file, $m)) {
+                $routes = eval("return {$m[1]}");
+            } else {
+                $routes = [];
+            }
+        }
+
+        return $routes;
+    }
+
+    protected function roleAccessAsString($rule)
+    {
+//        foreach ($access as &$rule) {
+            if (is_array($rule)) {
+                foreach ($rule as &$group) {
+                    if (is_array($group)) {
+                        $group = '( ' . implode(' && ', $group) . ' )';
+                    }
+                }
+
+                if (count($rule) > 1) {
+                    $rule = implode(' || ', $rule);
+                } else {
+                    $rule = trim(implode('', $rule), '() ');
+                }
+            }
+
+            $rule = explode(' ', $rule);
+
+            $aliases = [
+                'user' => 'logged',
+                '*' => 'public',
+            ];
+
+            foreach ($rule as &$_rule) {
+                if (isset($aliases[$_rule])) {
+                    $_rule = $aliases[$_rule];
+                }
+                $_rule = \Phalcon\Text::camelize($_rule);
+            }
+
+        return implode(' ', $rule);
+//        }
+
+        return $rule ?: '';
+    }
+
+    public function parse($text, $method = null)
+    {
+        if (preg_match('~Url:\s/~', $text)) {
+            $routes = $this->getRouterConfig();
+            $context = $this->renderingContext;
+
+            $data = [];
+
+            // table
+            $text = preg_replace_callback('/([^\\n]+?\|[^\\n]+?\|[^\\n]*\\n)?(\-\-+\|:\-\-+:\|\-\-+)((?!\\n\\n).)*\\n\\n/isxSX', function($m) use (&$data) {
+                $text = $m[0];
+                if (empty($m[1])) {
+                    $text = str_replace($m[2], "0 | 0 | 0 \n--|:--:|--", $text);
+                }
+                $text = $this->parseLinks2ModelsInline($text);
+                $parser = new \Parsedown();
+                $mark =  $parser->text($text);
+                $mark = str_replace('<table>', '<table class="summary-table table table-striped  table-bordered table-hover">', $mark);
+                if (empty($m[1])) {
+                    $mark = preg_replace('/<thead.*<\/thead>/isxSX', '', $mark);
+                } else {
+                    $mark = preg_replace('/<thead[^>]*>(.*)<\/thead>\s*<tbody>/isxSX', '<tbody>\1', $mark);
+                }
+                $key = '$$$' . sprintf('%02d', count($data)) . '$$$';
+                $data[$key] = $mark;
+                return  $key . "\n\n";
+            }, $text);
+
+            // code
+            $text = preg_replace_callback('/```((?!```).)*```/isxSX', function($m) use (&$data) {
+                $parser = new \Parsedown();
+                $key = '$$$' . sprintf('%02d', count($data)) . '$$$';
+                $data[$key] = $parser->text($m[0]);
+                return $key . "\n\n";
+            }, $text);
+
+            $options = [];
+
+            // strong
+            $text = preg_replace_callback('/\b([a-z\s]+):([^\n]*(\n[^\n:]+\n)?)/isxSX', function($m) use (&$data, &$options) {
+                list(, $property, $text) = $m;
+
+                $text = trim($text);
+                $property = trim($property);
+                $option = strtolower($property);
+
+                $options[$option] = $text;
+
+                if ($option == 'url') {
+                    return '<code class="hljs api">' . $text . '</code>' . "\n";
+                }
+
+                if (in_array($option, ['returns', 'filter by', 'applicable to', 'affects'])) {
+                    $text = $this->parseLink2Model($text, $data);
+//                    echo '';
+                }
+                $text = $this->parseLinks2ModelsInline($text);
+
+                if (in_array($option, ['note', 'info'])) {
+                    return '<div class="alert alert-info">' . $property . '. ' . $text . '</div>';
+                }
+                if (in_array($option, ['notice', 'danger', 'alert'])) {
+                    return '<div class="alert alert-danger">' . $property . '. ' . $text . '</div>';
+                }
+                if (in_array($option, ['warning', 'warn'])) {
+                    return '<div class="alert alert-warning">' . $property . '. ' . $text . '</div>';
+                }
+
+//                if (preg_match('/\|.*\|/', $text)) {
+//                    return '<p style=" font-size: 17px;"><strong>' . $property . ':</strong></p> ' . $text;
+//                }
+
+                return '<p style=" font-size: 17px;"><strong>' . $property . ':</strong> ' . $text . '</p>' . "\n";
+            }, $text);
+
+            $routes = $this->getRouterConfig();
+            $controller = $context->name;
+            $name = substr(array_reverse(explode('\\', $controller))[0], 0, -10);
+            $index = str_replace('_', '-', \Phalcon\Text::uncamelize($name));
+
+            if (!isset($routes[$index])) {
+                throw new \Exception(sprintf('Can\'t find controller route %s in webapi router.php', $index));
+            }
+
+            $route = null;
+
+            foreach ($routes[$index] as $url => $methods) {
+                foreach ($methods as $_method => $_route) {
+                    if (!isset($_route['action'])) {
+                        throw new \Exception(sprintf('Undefined option "action" in route %s for url %s', $index, $url));
+                    }
+                    if (!isset($_route['allow'])) {
+                        throw new \Exception(sprintf('Undefined option "method" in route %s for url %s', $index, $url));
+                    }
+
+                    if ($_route['action'] . 'Action' == $method->name) {
+                        $route = array_merge($_route, [
+                            'url' => $url,
+                            'method' => strtoupper($_method),
+                        ]);
+                    }
+                }
+            }
+
+            if (empty($route)) {
+                // disabled
+                $notice = '<div class="alert alert-danger">
+                    Notice. This action is disabled, the reasons can be: 
+                    not implemented, unsafe, duplicated or deprecated (autodetect: disabled in the router)</div>';
+
+                $text = $notice . $text;
+            }
+            else {
+                if (!isset($options['method'])) {
+                    throw new \Exception(sprintf('Required option "Method" in %s::%s', $context->name, $method->name));
+                }
+
+                if (!isset($options['access'])) {
+                    throw new \Exception(sprintf('Required option "Access" in %s::%s', $context->name, $method->name));
+                }
+
+                if ($options['method'] !== $route['method']) {
+                    self::$notices[] = sprintf("Wrong method for route %s::%s\nRight method: %s", $controller, $method->name, strtoupper($route['method']));
+                }
+
+                $access = $this->roleAccessAsString($route['allow']);
+                $currentAccess = preg_replace('/\([^\(\)\|\&]+\)/', '', $options['access']);
+                $currentAccess = str_replace('LoggedUserHasAccess', 'Logged && UserHasAccess', $currentAccess);
+                $currentAccess = str_replace(' and ', ' && ', $currentAccess);
+                $currentAccess = str_replace('  ', ' ', $currentAccess);
+
+                if (implode(' || ', explode(', ', trim($currentAccess))) !== $access) {
+                    self::$notices[] = sprintf("Wrong access for route %s::%s\nRight access: %s", $controller, $method->name, $access);
+                }
+            }
+
+            if (!preg_match('~' . preg_replace('/\([^\)]+\)/', '(\(?{[a-z_]+}\)?)', $route['url']) . '~isxSX', $options['url'])) {
+                self::$notices[] = sprintf('Wrong api url for %s\nUrl in route: %s', $options['url'], $route['url']);
+            }
+
+            $text = preg_replace('/\b_(.+?)_\b/', '<i>\1</i>', $text);
+            $text = preg_replace('/\b\*\*(.+?)\*\*\b/', '<strong>\1</strong>', $text);
+
+
+            $r = str_replace('- - -', '', strtr($text, $data));
+
+            return $r;
+
+        }
+
+//        $mark2 = \Michelf\MarkdownExtra::defaultTransform($text);
+
         $markup = parent::parse($text);
         $markup = $this->applyToc($markup);
         return $markup;
+    }
+
+    public static $notices = [];
+
+    public function parseWebApi($text)
+    {
+        if (preg_match('~Url:\s/~', $text)) {
+            if (preg_match('/Url:([^\n]*).*Method:([^\n]*).*Access:([^\n]*)/', $text, $m)) {
+                list($url, $method, $access) = $m;
+
+                $text2 = preg_replace('/Url:([^\n]*).*Method:([^\n]*).*Access:([^\n]*)/', '', $text, $m);
+                $data = explode(':', $text2);
+
+
+            } else {
+                throw new \Exception(sprintf("Error parsing text: '%s'", $text));
+            }
+        }
+    }
+
+    public function parse_blocks($text, &$data)
+    {
+        foreach ($text as $index => $prop) {
+            switch ($prop) {
+                case 'Properties':
+                    return $this->parseTable($text, $index, $data);
+                    break;
+                case 'Notice':
+                    break;
+            }
+        }
+    }
+
+    public function parseTable($text, $index, &$data)
+    {
+        $line = $text[$index];
+        $align = [];
+
+        if (preg_match('/([\\\|\-\s:]+)/', $line, $m)) {
+            $info = $m[1];
+            $info = explode('|', trim(trim($info), '|'));
+            foreach ($info as $index => $row) {
+                if (preg_match('/^:(\-)+:$/', $row)) {
+                    $align[$index] = 'center';
+                }
+                elseif (preg_match('/^\s*(\-)+:$/', $row)) {
+                    $align[$index] = 'right';
+                }
+                else {
+                    $align[$index] = null;
+                }
+            }
+        }
+
+//        $raw =
     }
 
     /**
@@ -154,7 +465,7 @@ class ApiMarkdown extends GithubMarkdown
      * @param bool $paragraph
      * @return string
      */
-    public static function process($content, $context = null, $paragraph = false)
+    public static function process($content, $context = null, $paragraph = false, $method = null)
     {
         if (!isset(Markdown::$flavors['api'])) {
             Markdown::$flavors['api'] = new static;
@@ -168,7 +479,7 @@ class ApiMarkdown extends GithubMarkdown
         if ($paragraph) {
             return Markdown::processParagraph($content, 'api');
         } else {
-            return Markdown::process($content, 'api');
+            return Markdown::process($content, 'api', $method);
         }
     }
 
