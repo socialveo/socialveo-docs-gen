@@ -160,15 +160,16 @@ abstract class BaseRenderer extends Component
                         $links[] = $this->generateLink($linkText, $this->generateApiUrl($linkText), $options) . $postfix;
                     }
                     else {
-                        if (!($not_supported = in_array($type, ['void', 'mixed'])) && ($link = $this->getClassTypeLink($type))) {
+                        if (in_array($type, ['void', 'mixed', 'number'])) {
+                            $links[] = $this->generateLink($type, $this->generateApiUrl('http://php.net/manual/en/language.pseudo-types.php'), $options) . $postfix;
+                        }
+                        elseif ($link = $this->getClassTypeLink($type)) {
                             $links[] = $this->generateLink($type, $link, $options) . $postfix;
                         } else {
-                            if (!$not_supported) {
-                                if ($context instanceof BaseDoc) {
-                                    self::$undefTypes[$context->sourceFile] = $type;
-                                } else {
-                                    self::$undefTypes[] = $type;
-                                }
+                            if ($context instanceof BaseDoc) {
+                                self::$undefTypes[$context->sourceFile] = $type;
+                            } else {
+                                self::$undefTypes[] = $type;
                             }
                             $links[] = $type . $postfix;
                         }

@@ -50,11 +50,11 @@ class ApiRenderer extends \yii\apidoc\templates\html\ApiRenderer
         }
 
         foreach ($extTypes as $ext => $extType) {
-            $readme = @file_get_contents("https://raw.github.com/yiisoft/yii2-$ext/master/README.md");
+//            $readme = @file_get_contents("https://raw.github.com/yiisoft/yii2-$ext/master/README.md");
             $indexFileContent = $this->renderWithLayout($this->indexView, [
                 'docContext' => $context,
                 'types' => $extType,
-                'readme' => $readme ?: null,
+                'readme' => /*$readme ?: */null,
             ]);
             file_put_contents($targetDir . "/ext-{$ext}-index.html", $indexFileContent);
         }
@@ -68,11 +68,11 @@ class ApiRenderer extends \yii\apidoc\templates\html\ApiRenderer
                 'readme' => null,
             ]);
         } else {
-            $readme = @file_get_contents("https://raw.github.com/yiisoft/yii2-framework/master/README.md");
+//            $readme = @file_get_contents("https://raw.github.com/yiisoft/yii2-framework/master/README.md");
             $indexFileContent = $this->renderWithLayout($this->indexView, [
                 'docContext' => $context,
                 'types' => $yiiTypes,
-                'readme' => $readme ?: null,
+                'readme' =>/* $readme ?:*/ null,
             ]);
         }
         file_put_contents($targetDir . '/index.html', $indexFileContent);
