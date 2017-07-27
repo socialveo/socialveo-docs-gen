@@ -58,7 +58,7 @@ ArrayHelper::multisort($methods, 'name');
     <div class="doc-description">
         <p><strong><?= ApiMarkdown::process($method->shortDescription, $type, true) ?></strong></p>
 
-        <?= ApiMarkdown::process($method->description, $type) ?>
+        <?= ApiMarkdown::process($method->description, $type, false, $method) ?>
 
         <?= $this->render('seeAlso', ['object' => $method]) ?>
     </div>
