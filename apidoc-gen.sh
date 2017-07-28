@@ -60,6 +60,7 @@ mkdir -m 0777 "$dest/images" >/dev/null 2>/dev/null
 mkdir -m 0777 "$dest/assets" >/dev/null 2>/dev/null
 mkdir -m 0777 "$dest/assets/css" >/dev/null 2>/dev/null
 mkdir -m 0777 "$dest/assets/css/socialveo" >/dev/null 2>/dev/null
+mkdir -m 0777 "$dest/assets/socialveo" >/dev/null 2>/dev/null
 
 template="$path/templates/bootstrap"
 
