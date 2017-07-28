@@ -113,14 +113,14 @@ class ApiController extends BaseController
 
         if (!empty($context->errors)) {
             ArrayHelper::multisort($context->errors, 'file');
-            file_put_contents($targetDir . '/errors.txt', print_r($context->errors, true));
-            $this->stdout(count($context->errors) . " errors have been logged to $targetDir/errors.txt\n", Console::FG_RED, Console::BOLD);
+            file_put_contents($targetDir . '/logs/errors.txt', print_r($context->errors, true));
+            $this->stdout(count($context->errors) . " errors have been logged to $targetDir/logs/errors.txt\n", Console::FG_RED, Console::BOLD);
         }
 
         if (!empty($context->warnings)) {
             ArrayHelper::multisort($context->warnings, 'file');
-            file_put_contents($targetDir . '/warnings.txt', print_r($context->warnings, true));
-            $this->stdout(count($context->warnings) . " warnings have been logged to $targetDir/warnings.txt\n", Console::FG_YELLOW, Console::BOLD);
+            file_put_contents($targetDir . '/logs/warnings.txt', print_r($context->warnings, true));
+            $this->stdout(count($context->warnings) . " warnings have been logged to $targetDir/logs/warnings.txt\n", Console::FG_YELLOW, Console::BOLD);
         }
     }
 
