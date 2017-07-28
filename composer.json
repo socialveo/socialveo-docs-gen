@@ -1,20 +1,20 @@
 {
-    "name": "yiisoft/yii2-apidocs",
-    "description": "API Documentation generator for the Yii framework 2.0",
-    "keywords": ["yii2", "phpdoc", "apidoc", "api", "documentation"],
-    "type": "yii2-extension",
+    "name": "socialveo/socialveo-docs-gen",
+    "description": "API Documentation generator for the Socialveo",
+    "keywords": ["socialveo", "phpdoc", "apidoc", "api", "documentation"],
     "license": "BSD-3-Clause",
     "support": {
-        "issues": "https://github.com/yiisoft/yii2-apidoc/issues",
-        "forum": "http://www.yiiframework.com/forum/",
-        "wiki": "http://www.yiiframework.com/wiki/",
-        "irc": "irc://irc.freenode.net/yii",
-        "source": "https://github.com/yiisoft/yii2-apidoc"
+        "issues": "https://github.com/socialveo/socialveo-docs-gen/issues",
+        "source": "https://github.com/socialveo/socialveo-docs-gen"
     },
     "authors": [
         {
             "name": "Carsten Brandt",
             "email": "mail@cebe.cc"
+        },
+        {
+            "name": "Andrey Izman",
+            "email": "izmanw@gmail.com"
         }
     ],
     "minimum-stability": "dev",
@@ -29,9 +29,10 @@
         "cebe/markdown": "~1.0.0 | ~1.1.0",
         "cebe/markdown-latex": "~1.0",
         "scrivo/highlight.php": "~8.0",
-        "yiisoft/yii2-apidoc": "^2.1@dev",
         "erusev/parsedown": "dev-master",
-        "michelf/php-markdown": "^1.7"
+        "michelf/php-markdown": "^1.7",
+        "socialveo/socialveo": "dev-master",
+        "socialveo/socialveo-docs": "dev-master"
     },
     "autoload": {
         "psr-4": { "yii\\apidoc\\": "" }
@@ -45,5 +46,17 @@
             "npm-asset-library": "vendor/npm",
             "bower-asset-library": "vendor/bower"
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:socialveo/socialveo.git",
+            "reference": "origin/master"
+        },
+        {
+            "type": "vcs",
+            "url": "git@github.com:socialveo/socialveo-docs.git",
+            "reference": "origin/master"
+        }
+    ]
 }
