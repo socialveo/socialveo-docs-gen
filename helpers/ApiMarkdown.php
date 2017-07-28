@@ -1,14 +1,21 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
- * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @link        http://www.yiiframework.com/
+ * @copyright   Copyright (c) 2008 Yii Software LLC
+ * @license     http://www.yiiframework.com/license/
+ *
+ * @link        https://socialveo.com Socialveo
+ * @copyright   Copyright (C) 2017 Socialveo Sagl - All Rights Reserved
+ * @license     Proprietary Software Socialveo (C) 2017, Socialveo Sagl {@link https://socialveo.com/legal Socialveo Legal Policies}
  */
 
 namespace yii\apidoc\helpers;
 
 use cebe\markdown\GithubMarkdown;
+use Phalcon\Text;
+use Socialveo\Core\models\SocialveoModel;
 use yii\apidoc\models\ClassDoc;
+use yii\apidoc\models\MethodDoc;
 use yii\apidoc\models\TypeDoc;
 use yii\apidoc\renderers\BaseRenderer;
 use yii\helpers\Html;
@@ -40,6 +47,12 @@ class ApiMarkdown extends GithubMarkdown
     protected $renderingContext;
     protected $headings = [];
 
+    /**
+     * Notices
+     * @var array
+     */
+    public static $notices = [];
+
 
     /**
      * @return array the headlines of this document
@@ -59,23 +72,39 @@ class ApiMarkdown extends GithubMarkdown
         $this->headings = [];
     }
 
+    /**
+     * Parse inline Socialveo models
+     * @param string $text
+     * @return string
+     */
     public function parseModels(&$text)
     {
-        $text = preg_replace_callback('/(?:^|\n)([a-z\s]+):/isxSX', function($m) {
+        $text = preg_replace_callback('/(?:^|\n)([a-z\s]+):/isxSX', function ($m) {
             return $this->getModelLink($m[1]);
         }, $text);
     }
 
+    /**
+     * Create html link
+     * @param array $block
+     * @return string
+     */
     private function linkTo($block)
     {
         return '<a href="' . htmlspecialchars($block['url'], ENT_COMPAT | ENT_HTML401, 'UTF-8') . '"'
-        . (empty($block['text']) ? '' : ' title="' . htmlspecialchars($block['text'], ENT_COMPAT | ENT_HTML401 | ENT_SUBSTITUTE, 'UTF-8') . '"')
+        . (empty($block['text']) ? '' : ' title="' . htmlspecialchars($block['text'],
+                ENT_COMPAT | ENT_HTML401 | ENT_SUBSTITUTE, 'UTF-8') . '"')
         . '>' . $block['text'] . '</a>';
     }
 
+    /**
+     * Get Socialveo model and returns link to model
+     * @param array $match
+     * @return string
+     */
     public function getModelLink($match)
     {
-        $model = \Socialveo\Core\models\SocialveoModel::getModel($match);
+        $model = SocialveoModel::getModel($match);
         if (!$model || !class_exists($model)) {
             return $match;
         }
@@ -84,30 +113,45 @@ class ApiMarkdown extends GithubMarkdown
         return $l;
     }
 
+    /**
+     * Parse inline Socialveo models and creates links to models
+     * @param string $text
+     * @return string
+     */
     public function parseLinks2ModelsInline($text)
     {
-        $text = preg_replace_callback('/{([A-Z][a-z]+[A-Za-z]+)}/sxSX', function($m) {
+        $text = preg_replace_callback('/{([A-Z][a-z]+[A-Za-z]+)}/sxSX', function ($m) {
             return $this->getModelLink($m[1]);
         }, $text);
 
         return $text;
     }
 
+    /**
+     * Parse Socialveo model and creates link to model
+     * @param string $text
+     * @param array $data
+     * @return string
+     */
     public function parseLink2Model($text, &$data)
     {
-        $text = preg_replace_callback('/([a-z]+)/isxSX', function($m) {
+        $text = preg_replace_callback('/([a-z]+)/isxSX', function ($m) {
             return $this->getModelLink($m[0]);
         }, $text);
 
-        $text = preg_replace_callback('/<[^>\/]*>[^<]*<\/[^>]*>/isxSX', function($m) use (&$data) {
+        $text = preg_replace_callback('/<[^>\/]*>[^<]*<\/[^>]*>/isxSX', function ($m) use (&$data) {
             $key = '$$$' . sprintf('%02d', count($data)) . '$$$';
             $data[$key] = $m[0];
-            return $key  . "\n\n";
+            return $key . "\n\n";
         }, $text);
 
         return $text;
     }
 
+    /**
+     * Returns Socialveo webapi router config
+     * @return array
+     */
     private function getRouterConfig()
     {
         static $routes;
@@ -126,73 +170,80 @@ class ApiMarkdown extends GithubMarkdown
         return $routes;
     }
 
+    /**
+     * Returns access role as string
+     * @param mixed $rule
+     * @return string
+     */
     protected function roleAccessAsString($rule)
     {
-//        foreach ($access as &$rule) {
-            if (is_array($rule)) {
-                foreach ($rule as &$group) {
-                    if (is_array($group)) {
-                        $group = '( ' . implode(' && ', $group) . ' )';
-                    }
-                }
-
-                if (count($rule) > 1) {
-                    $rule = implode(' || ', $rule);
-                } else {
-                    $rule = trim(implode('', $rule), '() ');
+        if (is_array($rule)) {
+            foreach ($rule as &$group) {
+                if (is_array($group)) {
+                    $group = '( ' . implode(' && ', $group) . ' )';
                 }
             }
 
-            $rule = explode(' ', $rule);
-
-            $aliases = [
-                'user' => 'logged',
-                '*' => 'public',
-            ];
-
-            foreach ($rule as &$_rule) {
-                if (isset($aliases[$_rule])) {
-                    $_rule = $aliases[$_rule];
-                }
-                $_rule = \Phalcon\Text::camelize($_rule);
+            if (count($rule) > 1) {
+                $rule = implode(' || ', $rule);
+            } else {
+                $rule = trim(implode('', $rule), '() ');
             }
+        }
+
+        $rule = explode(' ', $rule);
+
+        $aliases = [
+            'user' => 'logged',
+            '*' => 'public',
+        ];
+
+        foreach ($rule as &$_rule) {
+            if (isset($aliases[$_rule])) {
+                $_rule = $aliases[$_rule];
+            }
+            $_rule = Text::camelize($_rule);
+        }
 
         return implode(' ', $rule);
-//        }
-
-        return $rule ?: '';
     }
 
+    /**
+     * Parse doc-block and returns as html
+     * @param string $text
+     * @param MethodDoc $method [optional] Current method
+     * @return string
+     * @throws \Exception
+     */
     public function parse($text, $method = null)
     {
-        if (preg_match('~Url:\s/~', $text)) {
-            $routes = $this->getRouterConfig();
-            $context = $this->renderingContext;
-
+        if ($method && preg_match('~Url:\s/~', $text)) {
             $data = [];
 
             // table
-            $text = preg_replace_callback('/([^\\n]+?\|[^\\n]+?\|[^\\n]*\\n)?(\-\-+\|:\-\-+:\|\-\-+)((?!\\n\\n).)*\\n\\n/isxSX', function($m) use (&$data) {
-                $text = $m[0];
-                if (empty($m[1])) {
-                    $text = str_replace($m[2], "0 | 0 | 0 \n--|:--:|--", $text);
-                }
-                $text = $this->parseLinks2ModelsInline($text);
-                $parser = new \Parsedown();
-                $mark =  $parser->text($text);
-                $mark = str_replace('<table>', '<table class="summary-table table table-striped  table-bordered table-hover">', $mark);
-                if (empty($m[1])) {
-                    $mark = preg_replace('/<thead.*<\/thead>/isxSX', '', $mark);
-                } else {
-                    $mark = preg_replace('/<thead[^>]*>(.*)<\/thead>\s*<tbody>/isxSX', '<tbody>\1', $mark);
-                }
-                $key = '$$$' . sprintf('%02d', count($data)) . '$$$';
-                $data[$key] = $mark;
-                return  $key . "\n\n";
-            }, $text);
+            $text = preg_replace_callback('/([^\\n]+?\|[^\\n]+?\|[^\\n]*\\n)?(\-\-+\|:\-\-+:\|\-\-+)((?!\\n\\n).)*\\n\\n/isxSX',
+                function ($m) use (&$data) {
+                    $text = $m[0];
+                    if (empty($m[1])) {
+                        $text = str_replace($m[2], "0 | 0 | 0 \n--|:--:|--", $text);
+                    }
+                    $text = $this->parseLinks2ModelsInline($text);
+                    $parser = new \Parsedown();
+                    $mark = $parser->text($text);
+                    $mark = str_replace('<table>',
+                        '<table class="summary-table table table-striped  table-bordered table-hover">', $mark);
+                    if (empty($m[1])) {
+                        $mark = preg_replace('/<thead.*<\/thead>/isxSX', '', $mark);
+                    } else {
+                        $mark = preg_replace('/<thead[^>]*>(.*)<\/thead>\s*<tbody>/isxSX', '<tbody>\1', $mark);
+                    }
+                    $key = '$$$' . sprintf('%02d', count($data)) . '$$$';
+                    $data[$key] = $mark;
+                    return $key . "\n\n";
+                }, $text);
 
             // code
-            $text = preg_replace_callback('/```((?!```).)*```/isxSX', function($m) use (&$data) {
+            $text = preg_replace_callback('/```((?!```).)*```/isxSX', function ($m) use (&$data) {
                 $parser = new \Parsedown();
                 $key = '$$$' . sprintf('%02d', count($data)) . '$$$';
                 $data[$key] = $parser->text($m[0]);
@@ -202,46 +253,44 @@ class ApiMarkdown extends GithubMarkdown
             $options = [];
 
             // strong
-            $text = preg_replace_callback('/\b([a-z\s]+):([^\n]*(\n[^\n:]+\n)?)/isxSX', function($m) use (&$data, &$options) {
-                list(, $property, $text) = $m;
+            $text = preg_replace_callback('/\b([a-z\s]+):([^\n]*(\n[^\n:]+\n)?)/isxSX',
+                function ($m) use (&$data, &$options) {
+                    list(, $property, $text) = $m;
 
-                $text = trim($text);
-                $property = trim($property);
-                $option = strtolower($property);
+                    $text = trim($text);
+                    $property = trim($property);
+                    $option = strtolower($property);
 
-                $options[$option] = $text;
+                    $options[$option] = $text;
 
-                if ($option == 'url') {
-                    return '<code class="hljs api">' . $text . '</code>' . "\n";
-                }
+                    if ($option == 'url') {
+                        return '<code class="hljs api">' . $text . '</code>' . "\n";
+                    }
 
-                if (in_array($option, ['returns', 'filter by', 'applicable to', 'affects'])) {
-                    $text = $this->parseLink2Model($text, $data);
-//                    echo '';
-                }
-                $text = $this->parseLinks2ModelsInline($text);
+                    if (in_array($option, ['returns', 'filter by', 'applicable to', 'affects'])) {
+                        $text = $this->parseLink2Model($text, $data);
+                    }
 
-                if (in_array($option, ['note', 'info'])) {
-                    return '<div class="alert alert-info">' . $property . '. ' . $text . '</div>';
-                }
-                if (in_array($option, ['notice', 'danger', 'alert'])) {
-                    return '<div class="alert alert-danger">' . $property . '. ' . $text . '</div>';
-                }
-                if (in_array($option, ['warning', 'warn'])) {
-                    return '<div class="alert alert-warning">' . $property . '. ' . $text . '</div>';
-                }
+                    $text = $this->parseLinks2ModelsInline($text);
 
-//                if (preg_match('/\|.*\|/', $text)) {
-//                    return '<p style=" font-size: 17px;"><strong>' . $property . ':</strong></p> ' . $text;
-//                }
+                    if (in_array($option, ['note', 'info'])) {
+                        return '<div class="alert alert-info">' . $property . '. ' . $text . '</div>';
+                    }
+                    if (in_array($option, ['notice', 'danger', 'alert'])) {
+                        return '<div class="alert alert-danger">' . $property . '. ' . $text . '</div>';
+                    }
+                    if (in_array($option, ['warning', 'warn'])) {
+                        return '<div class="alert alert-warning">' . $property . '. ' . $text . '</div>';
+                    }
 
-                return '<p style=" font-size: 17px;"><strong>' . $property . ':</strong> ' . $text . '</p>' . "\n";
-            }, $text);
+                    return '<p style=" font-size: 17px;"><strong>' . $property . ':</strong> ' . $text . '</p>' . "\n";
+                }, $text);
 
+            $context = $this->renderingContext;
             $routes = $this->getRouterConfig();
             $controller = $context->name;
             $name = substr(array_reverse(explode('\\', $controller))[0], 0, -10);
-            $index = str_replace('_', '-', \Phalcon\Text::uncamelize($name));
+            $index = str_replace('_', '-', Text::uncamelize($name));
 
             if (!isset($routes[$index])) {
                 throw new \Exception(sprintf('Can\'t find controller route %s in webapi router.php', $index));
@@ -274,8 +323,7 @@ class ApiMarkdown extends GithubMarkdown
                     not implemented, unsafe, duplicated or deprecated (autodetect: disabled in the router)</div>';
 
                 $text = $notice . $text;
-            }
-            else {
+            } else {
                 if (!isset($options['method'])) {
                     throw new \Exception(sprintf('Required option "Method" in %s::%s', $context->name, $method->name));
                 }
@@ -285,7 +333,8 @@ class ApiMarkdown extends GithubMarkdown
                 }
 
                 if ($options['method'] !== $route['method']) {
-                    self::$notices[] = sprintf("Wrong method for route %s::%s\nRight method: %s", $controller, $method->name, strtoupper($route['method']));
+                    self::$notices[] = sprintf("Wrong method for route %s::%s\nRight method: %s", $controller,
+                        $method->name, strtoupper($route['method']));
                 }
 
                 $access = $this->roleAccessAsString($route['allow']);
@@ -295,11 +344,14 @@ class ApiMarkdown extends GithubMarkdown
                 $currentAccess = str_replace('  ', ' ', $currentAccess);
 
                 if (implode(' || ', explode(', ', trim($currentAccess))) !== $access) {
-                    self::$notices[] = sprintf("Wrong access for route %s::%s\nRight access: %s", $controller, $method->name, $access);
+                    self::$notices[] = sprintf("Wrong access for route %s::%s\nRight access: %s", $controller,
+                        $method->name, $access);
                 }
             }
 
-            if (!preg_match('~' . preg_replace('/\([^\)]+\)/', '(\(?{[a-z_]+}\)?)', $route['url']) . '~isxSX', $options['url'])) {
+            if (!preg_match('~' . preg_replace('/\([^\)]+\)/', '(\(?{[a-z_]+}\)?)', $route['url']) . '~isxSX',
+                $options['url'])
+            ) {
                 self::$notices[] = sprintf('Wrong api url for %s\nUrl in route: %s', $options['url'], $route['url']);
             }
 
@@ -310,69 +362,13 @@ class ApiMarkdown extends GithubMarkdown
             $r = str_replace('- - -', '', strtr($text, $data));
 
             return $r;
-
         }
 
-//        $mark2 = \Michelf\MarkdownExtra::defaultTransform($text);
+//        $markup = \Michelf\MarkdownExtra::defaultTransform($text);
 
         $markup = parent::parse($text);
         $markup = $this->applyToc($markup);
         return $markup;
-    }
-
-    public static $notices = [];
-
-    public function parseWebApi($text)
-    {
-        if (preg_match('~Url:\s/~', $text)) {
-            if (preg_match('/Url:([^\n]*).*Method:([^\n]*).*Access:([^\n]*)/', $text, $m)) {
-                list($url, $method, $access) = $m;
-
-                $text2 = preg_replace('/Url:([^\n]*).*Method:([^\n]*).*Access:([^\n]*)/', '', $text, $m);
-                $data = explode(':', $text2);
-
-
-            } else {
-                throw new \Exception(sprintf("Error parsing text: '%s'", $text));
-            }
-        }
-    }
-
-    public function parse_blocks($text, &$data)
-    {
-        foreach ($text as $index => $prop) {
-            switch ($prop) {
-                case 'Properties':
-                    return $this->parseTable($text, $index, $data);
-                    break;
-                case 'Notice':
-                    break;
-            }
-        }
-    }
-
-    public function parseTable($text, $index, &$data)
-    {
-        $line = $text[$index];
-        $align = [];
-
-        if (preg_match('/([\\\|\-\s:]+)/', $line, $m)) {
-            $info = $m[1];
-            $info = explode('|', trim(trim($info), '|'));
-            foreach ($info as $index => $row) {
-                if (preg_match('/^:(\-)+:$/', $row)) {
-                    $align[$index] = 'center';
-                }
-                elseif (preg_match('/^\s*(\-)+:$/', $row)) {
-                    $align[$index] = 'right';
-                }
-                else {
-                    $align[$index] = null;
-                }
-            }
-        }
-
-//        $raw =
     }
 
     /**
@@ -435,7 +431,7 @@ class ApiMarkdown extends GithubMarkdown
         $result = parent::renderLink($block);
 
         // add special syntax for linking to the guide
-        $result = preg_replace_callback('/href="guide:([A-z0-9-.#]+)"/i', function($match) {
+        $result = preg_replace_callback('/href="guide:([A-z0-9-.#]+)"/i', function ($match) {
             return 'href="' . static::$renderer->generateGuideUrl($match[1]) . '"';
         }, $result, 1);
 

@@ -1,8 +1,12 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
- * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @link        http://www.yiiframework.com/
+ * @copyright   Copyright (c) 2008 Yii Software LLC
+ * @license     http://www.yiiframework.com/license/
+ *
+ * @link        https://socialveo.com Socialveo
+ * @copyright   Copyright (C) 2017 Socialveo Sagl - All Rights Reserved
+ * @license     Proprietary Software Socialveo (C) 2017, Socialveo Sagl {@link https://socialveo.com/legal Socialveo Legal Policies}
  */
 
 namespace yii\apidoc\renderers;
@@ -60,7 +64,7 @@ abstract class BaseRenderer extends Component
     }
 
     /**
-     * creates a link to a type (class, interface or trait)
+     * Creates a link to a type (class, interface or trait)
      * @param ClassDoc|InterfaceDoc|TraitDoc|ClassDoc[]|InterfaceDoc[]|TraitDoc[]|string|string[] $types
      * @param BaseDoc $context
      * @param string $title a title to be used for the link TODO check whether [[yii\...|Class]] is supported
