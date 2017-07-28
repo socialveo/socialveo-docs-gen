@@ -20,7 +20,6 @@ use yii\apidoc\models\TypeDoc;
 use yii\apidoc\renderers\BaseRenderer;
 use yii\helpers\Html;
 use yii\helpers\Inflector;
-use yii\helpers\Markdown;
 
 /**
  * A Markdown helper with support for class reference links.
