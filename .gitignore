@@ -4,3 +4,4 @@ vendor/*
 *.css.map
 /node_modules
 webapi.sh
+/.idea

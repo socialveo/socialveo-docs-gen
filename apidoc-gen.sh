@@ -9,7 +9,7 @@ generate=true
 
 src_dir="vendor/socialveo/socialveo/socialveo"
 src="$path/$src_dir"
-dest="$path/vendor/socialveo/socialveo-docs"
+dest="$path/vendor/socialveo/socialveo-docs/docs"
 
 dirs=()
 
