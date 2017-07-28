@@ -2,3 +2,5 @@
 composer.lock
 vendor/*
 *.css.map
+/node_modules
+webapi.sh
