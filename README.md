@@ -17,6 +17,7 @@ It's require access to private socialveo repos.
 Usage
 -----
 
-```
+```bash
 bash apidoc-gen.sh
+bash apidoc-gen.sh --clear-cache # clear cache before launch
 ```
