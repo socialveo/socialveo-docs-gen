@@ -21,14 +21,17 @@ while [[ $# -gt 0 ]]; do
         --only-copy-assets)
             generate=false
             ;;
-        --include-dir)
+        --module)
             if [[ $# -gt 1 ]]; then
                 dirs+=("$2")
                 shift
             else
-                (1>&2 echo -e "Option include-dir require specify the dir")
+                (1>&2 echo -e "Option module require specify the dir")
                 exit 2
             fi
+            ;;
+        --module=*)
+            dirs+=("${1##*=}")
             ;;
         *)
             (1>&2 echo -e "Invalid option '${1}'")
@@ -51,6 +54,7 @@ if $generate; then
 
     dirs="$( join_src "${dirs[@]}" )"
 
+    echo "php $path/apidoc api $dirs $dest"
     php "$path/apidoc" api "$dirs" "$dest"
 fi
 
