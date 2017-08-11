@@ -107,7 +107,7 @@ class ApiMarkdown extends GithubMarkdown
         if (!$model || !class_exists($model)) {
             return $match;
         }
-        $link = '/socialveo-docs/docs/core/' . implode('-', explode('\\', strtolower(trim($model, '\\')))) . '.html';
+        $link = implode('-', explode('\\', strtolower(trim($model, '\\')))) . '.html';
         $l = $this->linkTo(['url' => $link, 'text' => $match]);
         return $l;
     }
