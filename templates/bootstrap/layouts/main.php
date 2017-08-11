@@ -38,7 +38,7 @@ $this->beginPage();
             echo Html::encode($this->context->pageTitle);
         }
     ?></title>
-    <link href="./assets/socialveo/bootstrap.min.css" rel="stylesheet">
+    <link href="./assets/socialveo/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="./assets/socialveo/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <link href="./assets/socialveo/animate.css" rel="stylesheet">
     <link href="./assets/socialveo/style.css" rel="stylesheet">
