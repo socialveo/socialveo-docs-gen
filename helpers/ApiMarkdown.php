@@ -252,7 +252,7 @@ class ApiMarkdown extends GithubMarkdown
             $options = [];
 
             // strong
-            $text = preg_replace_callback('/\b([a-z\s]+):([^\n]*(\n[^\n:]+\n)?)/isxSX',
+            $text = preg_replace_callback('/^([a-z\s]+):([^\n]*(\n[^\n:]+\n)?)/isxSXm',
                 function ($m) use (&$data, &$options) {
                     list(, $property, $text) = $m;
 
@@ -282,7 +282,7 @@ class ApiMarkdown extends GithubMarkdown
                         return '<div class="alert alert-warning">' . $property . '. ' . $text . '</div>';
                     }
 
-                    return '<p style=" font-size: 17px;"><strong>' . $property . ':</strong> ' . $text . '</p>' . "\n";
+                    return '<p><strong>' . $property . ':</strong> ' . $text . '</p>' . "\n";
                 }, $text);
 
             $context = $this->renderingContext;
@@ -348,19 +348,23 @@ class ApiMarkdown extends GithubMarkdown
                 }
             }
 
-            if (!preg_match('~' . preg_replace('/\([^\)]+\)/', '(\(?{[a-z_]+}\)?)', $route['url']) . '~isxSX',
-                $options['url'])
-            ) {
-                self::$notices[] = sprintf('Wrong api url for %s\nUrl in route: %s', $options['url'], $route['url']);
+            if (isset($options['url'])) {
+                if (!preg_match('~' . preg_replace('/\([^\)]+\)/', '(\(?{[a-z_]+}\)?)', $route['url']) . '~isxSX',
+                    $options['url'])
+                ) {
+                    self::$notices[] = sprintf('Wrong api url for %s\nUrl in route: %s', $options['url'], $route['url']);
+                }
             }
 
             $text = preg_replace('/\b_(.+?)_\b/', '<i>\1</i>', $text);
             $text = preg_replace('/\b\*\*(.+?)\*\*\b/', '<strong>\1</strong>', $text);
 
+            $text = str_replace('- - -', '', strtr($text, $data));
 
-            $r = str_replace('- - -', '', strtr($text, $data));
+            $parser = new \Parsedown();
+            $text = $parser->text($text);
 
-            return $r;
+            return $text;
         }
 
 //        $markup = \Michelf\MarkdownExtra::defaultTransform($text);
