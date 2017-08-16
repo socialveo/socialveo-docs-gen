@@ -64,7 +64,7 @@ $this->beginContent('@yii/apidoc/templates/bootstrap/layouts/main.php', isset($t
         }
 
         return false;
-    });
+    }).trigger("click");
 
     var openNavigation = function($item) {
         var $e = $item.parent();
