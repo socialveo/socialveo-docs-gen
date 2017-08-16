@@ -3,3 +3,22 @@
 /.editorconfig      export-ignore
 /.gitattributes     export-ignore
 /.gitignore         export-ignore
+
+# Enforce unix line endings
+* text=auto
+
+# Text file types
+*.sass      text
+*.scss      text
+*.css       text
+*.js        text
+*.coffee    text
+*.json      text
+*.html      text
+*.phtml     text
+*.php       text
+*.volt      text
+*.hbs       text
+*.xml       text
+*.svg       text
+.gitignore  text
