@@ -13,6 +13,20 @@ dest="$path/vendor/socialveo/socialveo-docs/docs"
 
 dirs=()
 
+help="$(cat << EOF
+    apidoc-gen.sh - script for generating socialveo docs
+    ${bold}Usage${reset}:
+        apidoc-gen.sh [options]
+    ${bold}params${reset}
+        ${bold}options${reset}:
+            ${bold}--clear-cache${reset}                        - clear-cache before launch
+            ${bold}--only-copy-assets${reset}                   - will copy assets and quit (without generating)
+            ${bold}--module module | --module=module${reset}    - set module to generate
+            ${bold}--output path | --output=path${reset}        - set output path
+            ${bold}--help${reset}                               - print this help
+EOF
+)"
+
 while [[ $# -gt 0 ]]; do
     case "$1" in
         --clear-cache)
@@ -26,15 +40,30 @@ while [[ $# -gt 0 ]]; do
                 dirs+=("$2")
                 shift
             else
-                (1>&2 echo -e "Option module require specify the dir")
+                (1>&2 echo -e "Option --module require specify the module")
+                echo -e "$help"
                 exit 2
             fi
             ;;
         --module=*)
             dirs+=("${1##*=}")
             ;;
+        --output)
+            if [[ $# -gt 1 ]]; then
+                dest="$2"
+                shift
+            else
+                (1>&2 echo -e "Option --output require specify the path")
+                echo -e "$help"
+                exit 2
+            fi
+            ;;
+        --output=*)
+            dest="${1##*=}"
+            ;;
         *)
             (1>&2 echo -e "Invalid option '${1}'")
+            echo -e "$help"
             exit 1
             ;;
     esac
