@@ -57,6 +57,10 @@
             "type": "vcs",
             "url": "git@github.com:socialveo/socialveo-docs.git",
             "reference": "origin/master"
+        },
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
         }
     ]
 }
