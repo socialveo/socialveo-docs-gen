@@ -89,14 +89,12 @@ fi
 
 rm -rf "$dest/assets/css/socialveo" >/dev/null 2>/dev/null
 
-mkdir -m 0777 "$dest/images" >/dev/null 2>/dev/null
-mkdir -m 0777 "$dest/assets" >/dev/null 2>/dev/null
-mkdir -m 0777 "$dest/assets/css" >/dev/null 2>/dev/null
-mkdir -m 0777 "$dest/assets/css/socialveo" >/dev/null 2>/dev/null
-mkdir -m 0777 "$dest/assets/socialveo" >/dev/null 2>/dev/null
+mkdir -p -m 0777 "$dest/images" >/dev/null 2>/dev/null
+mkdir -p -m 0777 "$dest/assets/css/socialveo" >/dev/null 2>/dev/null
+mkdir -p -m 0777 "$dest/assets/socialveo" >/dev/null 2>/dev/null
 
 template="$path/templates/bootstrap"
 
-cp -r $template/images/*                    $dest/images/
-cp -r $template/assets/css/socialveo/*      $dest/assets/css/socialveo/
-cp -r $template/assets/css/socialveo/*      $dest/assets/socialveo/
+rsync -a $template/images/                    $dest/images/
+rsync -a $template/assets/css/socialveo/      $dest/assets/css/socialveo/
+rsync -a $template/assets/css/socialveo/      $dest/assets/socialveo/
