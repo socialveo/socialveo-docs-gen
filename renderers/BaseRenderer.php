@@ -204,8 +204,8 @@ abstract class BaseRenderer extends Component
         static $composer;
 
         if (!isset($composer)) {
-            $composer = json_decode(file_get_contents(__DIR__ . '/../../socialveo/composer.lock'), true);
-            require_once __DIR__ . '/../../socialveo/vendor/autoload.php';
+            $composer = json_decode(file_get_contents(__DIR__ . '/../vendor/socialveo/socialveo/composer.lock'), true);
+            require_once __DIR__ . '/../vendor/socialveo/socialveo/vendor/autoload.php';
         }
 
         if (!isset($composer['packages'])) {
