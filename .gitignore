@@ -6,3 +6,4 @@ vendor/*
 webapi.sh
 /.idea
 .github-token
+.update-last-commit
