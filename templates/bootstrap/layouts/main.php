@@ -226,7 +226,7 @@ JS
 <footer class="footer">
     <?php /* <p class="pull-left">&copy; My Company <?= date('Y') ?></p> */ ?>
     <p class="pull-right"><small>Page generated on <?= date('r') ?></small></p>
-    <?= Yii::powered() ?>
+    <a href="http://socialveo.com" rel="external"><img src="images/logo-dark.png" style=" height: 35px; margin-top: -6px;"></a></footer>
 </footer>
 
 <?php $this->endBody() ?>
