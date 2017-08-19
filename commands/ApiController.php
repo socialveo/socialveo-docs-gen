@@ -122,10 +122,22 @@ class ApiController extends BaseController
             $this->stdout(count($context->errors) . sprintf(" errors have been logged to %s/logs/errors.txt\n", dirname($targetDir)), Console::FG_RED, Console::BOLD);
         }
 
+        $notices = /*array_unique*/(\yii\apidoc\helpers\ApiMarkdown::$notices);
+        if (!empty($notices)) {
+            file_put_contents($targetDir . '/../logs/rest-api-notices.txt', print_r($notices, true));
+            $this->stdout(count($notices) . sprintf(" rest api notices have been logged to %s/logs/rest-api-notices.txt\n", dirname($targetDir)), Console::FG_RED, Console::BOLD);
+        }
+
         if (!empty($context->warnings)) {
             ArrayHelper::multisort($context->warnings, 'file');
             file_put_contents($targetDir . '/../logs/warnings.txt', print_r($context->warnings, true));
             $this->stdout(count($context->warnings) . sprintf(" warnings have been logged to %s/logs/warnings.txt\n", dirname($targetDir)), Console::FG_YELLOW, Console::BOLD);
+        }
+
+        $undef = /*array_unique*/(\yii\apidoc\renderers\BaseRenderer::$undefTypes);
+        if (!empty($undef)) {
+            file_put_contents($targetDir . '/../logs/undefined-types.txt', print_r($undef, true));
+            $this->stdout(count($undef) . sprintf(" undefined types have been logged to %s/logs/undefined-types.txt\n", dirname($targetDir)), Console::FG_YELLOW, Console::BOLD);
         }
     }
 
