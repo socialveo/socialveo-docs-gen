@@ -93,6 +93,11 @@ class ApiController extends BaseController
         // process files
         $fileCount = count($files);
         $this->stdout($fileCount . ' file' . ($fileCount == 1 ? '' : 's') . ' to update.' . PHP_EOL);
+
+        if (!$fileCount) {
+            exit(8);
+        }
+
         Console::startProgress(0, $fileCount, 'Processing files... ', false);
         $done = 0;
         foreach ($files as $file) {

@@ -85,6 +85,12 @@ if $generate; then
 
     echo "php $path/apidoc api $dirs $dest"
     php "$path/apidoc" api "$dirs" "$dest"
+
+    exit_code=$?
+
+    if [[ "$exit_code" != 0 ]]; then
+        exit "$exit_code"
+    fi
 fi
 
 rm -rf "$dest/assets/css/socialveo" >/dev/null 2>/dev/null
