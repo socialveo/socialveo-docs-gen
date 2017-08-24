@@ -220,7 +220,7 @@ class ApiMarkdown extends GithubMarkdown
             $data = [];
 
             // table
-            $text = preg_replace_callback('/([^\\n]+?\|[^\\n]+?\|[^\\n]*\\n)?(\-\-+\|:\-\-+:\|\-\-+)((?!\\n\\n).)*\\n\\n/isxSX',
+            $text = preg_replace_callback('/([^\\n]+?\|[^\\n]+?\|[^\\n]*\\n)?(\-\-+\|:\-\-+:\|\-\-+)\\n((?!\\n\\n).)*(?:\\n\\n|$)/isxSX',
                 function ($m) use (&$data) {
                     $text = $m[0];
                     if (empty($m[1])) {
