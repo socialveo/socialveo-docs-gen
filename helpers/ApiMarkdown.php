@@ -356,8 +356,8 @@ class ApiMarkdown extends GithubMarkdown
                 }
             }
 
-            $text = preg_replace('/\b_(.+?)_\b/', '<i>\1</i>', $text);
-            $text = preg_replace('/\b\*\*(.+?)\*\*\b/', '<strong>\1</strong>', $text);
+            $text = preg_replace('/\b_(.+)_\b/', '<i>\1</i>', $text);
+            $text = preg_replace('/\b\*\*(.+)\*\*\b/', '<strong>\1</strong>', $text);
 
             $text = str_replace('- - -', '', strtr($text, $data));
 
