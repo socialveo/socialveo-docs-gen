@@ -68,14 +68,18 @@ $this->beginPage();
                          role="navigation">
                         <div class="menu-menu-1-container">
                             <ul id="menu-menu-1" class="nav-menu navigation-bar navigation-bar-right">
-                                <li class="menu-item"><a href="https://socialveo.com/help/"><i
-                                            class="fa fa-life-ring"></i> Home</a></li>
-                                <li class="menu-item"><a href="https://socialveo.com/go/kb/"><i
-                                            class="fa fa-question-circle"></i> Knowledge Base</a></li>
-                                <li class="menu-item"><a href="https://socialveo.com/help/restapi/"><i
-                                            class="fa fa-code"></i> Rest API</a></li>
-                                <li class="menu-item"><a href="https://socialveo.com/help/docs/"><i
-                                            class="fa fa-file-code-o"></i> Documentation</a></li>
+                                
+                                <li class="menu-item"><a href="https://docs.socialveo.com">
+                                    <i class="fa fa-code"></i> Code Reference</a></li>
+                                
+                                <li class="menu-item"><a href="https://socialveo.com/community/kb">
+                                    <i class="fa fa-question-circle"></i> Knowledge Base</a></li>
+                                
+                                <li class="menu-item"><a href="https://socialveo.com/community/tutorials">
+                                    <i class="fa fa-life-ring"></i> Tutorials</a></li>   
+                                
+                                <li class="menu-item"><a href="https://socialveo.com/community/forums">
+                                    <i class="fa fa-comments"></i> Forums</a></li>
                             </ul>
                         </div>
                     </nav>
