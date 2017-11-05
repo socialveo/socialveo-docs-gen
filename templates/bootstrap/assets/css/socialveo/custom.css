@@ -260,3 +260,11 @@ body h5 {
   /* line 350, custom.scss */
   body #search-resultbox {
     display: none !important; } }
+/* line 356, custom.scss */
+.navigation-brand .brand-logo .logo {
+  background-image: url(https://docs.socialveo.com/assets/socialveo/socialveo-white.png) !important; }
+
+/* line 359, custom.scss */
+body .navigation.navigation-header.site-header {
+  background-image: url(https://socialveo.com/wp-content/themes/helpguru-childtheme/img/headoverlay.png) !important;
+  background-color: #00adee !important; }
