@@ -47,7 +47,7 @@ $this->beginPage();
 <body>
 
 <header>
-    <nav class="navigation navigation-header site-header" role="banner">
+    <nav class="navigation navigation-header site-header" role="banner" style="background-image: url(https://socialveo.com/wp-content/themes/helpguru-childtheme/img/headoverlay.png); background-color: #00adee;">
         <div class="container">
             <div class="rowx">
                 <div class="col-md-3">
