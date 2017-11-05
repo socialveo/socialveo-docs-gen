@@ -21,3 +21,10 @@ Usage
 bash apidoc-gen.sh
 bash apidoc-gen.sh --clear-cache # clear cache before launch
 ```
+
+Force update docs 
+-----
+
+```bash
+update-docs --force --clear-cache
+```
