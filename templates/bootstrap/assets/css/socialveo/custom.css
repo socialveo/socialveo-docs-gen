@@ -1,95 +1,74 @@
 @charset "UTF-8";
-/* line 2, custom.scss */
 body .doc-description {
   font-size: 17px !important; }
-/* line 5, custom.scss */
 body .wrap {
   margin-top: 0;
   margin-left: 15px !important;
   margin-right: 15px !important; }
-  /* line 9, custom.scss */
   body .wrap > .row {
     padding-top: 140px; }
-/* line 14, custom.scss */
 body pre > code.language-json {
   overflow: hidden;
   white-space: pre; }
-/* line 19, custom.scss */
 body span.p {
   line-height: 34px;
   display: block;
   font-size: 16px; }
-  /* line 23, custom.scss */
   body span.p > strong {
     font-weight: bold; }
-/* line 28, custom.scss */
 body code.hljs.api {
   font-size: 18px;
   margin-bottom: 13px; }
-/* line 33, custom.scss */
 body .container {
   width: 100% !important;
   max-width: 100% !important; }
-/* line 38, custom.scss */
 body #searchbox {
   margin: 13px 0 0 0;
   border: 1px solid #4985cb; }
-/* line 43, custom.scss */
 body .col-md-3.searchbox-col {
   margin: 0 !important;
   padding: 0 0 0 15px !important; }
-/* line 48, custom.scss */
 body #search-resultbox {
   top: 81px;
   margin: 0 22px;
   font-family: Roboto, sans-serif; }
-/* line 56, custom.scss */
 body #search-results li a:hover, body #search-results li a.selected {
   background: #44B5F6;
   color: #fff; }
-/* line 60, custom.scss */
 body #search-results li a span {
   text-decoration: none;
   -webkit-transition: none;
   -moz-transition: none;
   -o-transition: none;
   transition: none; }
-/* line 70, custom.scss */
 body .navigation-brand {
   width: 100%;
   min-width: 220px;
   margin-right: 0;
   margin-top: 0; }
-  /* line 75, custom.scss */
   body .navigation-brand .brand-logo .logo {
     height: 50px;
     margin-top: 5px; }
-/* line 81, custom.scss */
 body .alert {
   padding: 15px 10px;
   border-radius: 4px;
   margin-bottom: 15px; }
-/* line 87, custom.scss */
 body #navigation {
   word-wrap: break-word;
   border-bottom: 2px solid #ddd; }
-  /* line 91, custom.scss */
   body #navigation .list-group-item.active[data-toogle] {
     color: #fff;
     background-color: #337ab7;
     border-color: #337ab7; }
-  /* line 97, custom.scss */
   body #navigation .list-group-item.active {
     color: #fff;
     background: #44b5f6;
     border-color: #44b5f6; }
-  /* line 103, custom.scss */
   body #navigation .list-group-item:focus,
   body #navigation .list-group-item:hover {
     color: #fff;
     background: #44b5f6;
     border-color: #44b5f6; }
-  /* line 111, custom.scss */
   body #navigation .list-group-item .caret {
     border: 0 !important;
     font-size: 16px;
@@ -98,138 +77,100 @@ body #navigation {
     right: 8px;
     width: 14px;
     text-align: center; }
-    /* line 119, custom.scss */
     body #navigation .list-group-item .caret:before {
       content: "—"; }
-  /* line 124, custom.scss */
   body #navigation .list-group-item.collapsed .caret:before {
     content: "+"; }
-  /* line 131, custom.scss */
   body #navigation .list-group-item {
     border-radius: 0 !important;
     border-bottom: 0 !important; }
-  /* line 148, custom.scss */
   body #navigation > .submenu {
     background-color: #f9f9f9; }
-    /* line 151, custom.scss */
     body #navigation > .submenu a {
       background: transparent;
       padding-left: 30px; }
       @media only screen and (max-width: 1220px) {
-        /* line 151, custom.scss */
         body #navigation > .submenu a {
           padding-left: 25px; } }
-    /* line 160, custom.scss */
     body #navigation > .submenu .submenu {
       background-color: rgba(0, 0, 0, 0.03); }
-      /* line 162, custom.scss */
       body #navigation > .submenu .submenu a {
         padding-left: 45px; }
         @media only screen and (max-width: 1220px) {
-          /* line 162, custom.scss */
           body #navigation > .submenu .submenu a {
             padding-left: 35px; } }
-      /* line 171, custom.scss */
       body #navigation > .submenu .submenu .submenu a {
         padding-left: 60px; }
         @media only screen and (max-width: 1220px) {
-          /* line 171, custom.scss */
           body #navigation > .submenu .submenu .submenu a {
             padding-left: 45px; } }
-      /* line 180, custom.scss */
       body #navigation > .submenu .submenu .submenu .submenu a {
         padding-left: 75px; }
         @media only screen and (max-width: 1220px) {
-          /* line 180, custom.scss */
           body #navigation > .submenu .submenu .submenu .submenu a {
             padding-left: 55px; } }
-      /* line 189, custom.scss */
       body #navigation > .submenu .submenu .submenu .submenu .submenu a {
         padding-left: 90px; }
         @media only screen and (max-width: 1220px) {
-          /* line 189, custom.scss */
           body #navigation > .submenu .submenu .submenu .submenu .submenu a {
             padding-left: 65px; } }
-      /* line 198, custom.scss */
       body #navigation > .submenu .submenu .submenu .submenu .submenu .submenu a {
         padding-left: 105px; }
         @media only screen and (max-width: 1220px) {
-          /* line 198, custom.scss */
           body #navigation > .submenu .submenu .submenu .submenu .submenu .submenu a {
             padding-left: 75px; } }
-      /* line 207, custom.scss */
       body #navigation > .submenu .submenu .submenu .submenu .submenu .submenu .submenu a {
         padding-left: 120px; }
         @media only screen and (max-width: 1220px) {
-          /* line 207, custom.scss */
           body #navigation > .submenu .submenu .submenu .submenu .submenu .submenu .submenu a {
             padding-left: 85px; } }
-      /* line 216, custom.scss */
       body #navigation > .submenu .submenu .submenu .submenu .submenu .submenu .submenu .submenu a {
         padding-left: 135px; }
         @media only screen and (max-width: 1220px) {
-          /* line 216, custom.scss */
           body #navigation > .submenu .submenu .submenu .submenu .submenu .submenu .submenu .submenu a {
             padding-left: 95px; } }
-/* line 234, custom.scss */
 body .navigation-toggle {
   margin-right: 30px !important; }
-/* line 238, custom.scss */
 body .navbar-inverse.navbar-fixed-top.navbar {
   display: none !important; }
-/* line 245, custom.scss */
 body .table > thead > tr > th, body .table > thead > tr > td, body .table > tfoot > tr > th, body .table > tfoot > tr > td, body .table > tbody > tr > th, body .table > tbody > tr > td {
   font-size: 15px;
   font-weight: 300;
   padding: 15px 20px; }
-/* line 258, custom.scss */
 body h1, body h2, body h3, body h4, body h5 {
   word-break: break-word; }
-/* line 262, custom.scss */
 body h1 {
   font-size: 45px; }
-/* line 265, custom.scss */
 body h2 {
   font-size: 40px; }
-/* line 268, custom.scss */
 body h3 {
   font-size: 35px; }
-/* line 271, custom.scss */
 body h4 {
   font-size: 30px; }
-/* line 274, custom.scss */
 body h5 {
   font-size: 25px; }
 
 @media (min-width: 1106px) {
-  /* line 283, custom.scss */
   body .navigation-brand .brand-logo {
     width: 100%;
     /*padding-left: 15px;*/ }
-  /* line 287, custom.scss */
   body .wrap {
     margin-left: 30px !important;
     margin-right: 30px !important; }
-  /* line 292, custom.scss */
   body .navigation-bar-right {
     float: left !important; }
-  /* line 296, custom.scss */
   body .navigation-header .navigation-bar > li {
     padding: 0;
     margin: 0 15px; }
-  /* line 301, custom.scss */
   body #menu-menu-1 {
     padding: 13px 0 0 0 !important; } }
-/* line 307, custom.scss */
 .footer {
   padding: 20px 30px !important; }
 
 @media (max-width: 1105px) {
-  /* line 313, custom.scss */
   body .footer {
     padding-left: 15px !important;
     padding-right: 15px !important; }
-  /* line 317, custom.scss */
   body .navigation-toggle + .col-md-6,
   body .navigation-toggle + .col-md-9 {
     width: auto;
@@ -237,38 +178,45 @@ body h5 {
     left: 0;
     right: 0;
     top: 60px; }
-  /* line 325, custom.scss */
   body #site-navigation {
     margin-left: -15px;
     margin-right: -15px; }
-  /* line 329, custom.scss */
   body .col-md-3.searchbox-col {
     width: 40%; }
-  /* line 333, custom.scss */
   body #search-resultbox {
     margin: 0 15px; }
-  /* line 336, custom.scss */
   body .navigation-toggle {
-    margin-top: 13px; } }
+    margin-top: 13px; }
+
+  #site-navigation .dropdown .dropdown-menu {
+    display: block;
+    text-align: center;
+    background: transparent;
+    padding-top: 0; }
+
+  #site-navigation .dropdown .dropdown-menu li a {
+    text-transform: uppercase;
+    color: #fff; }
+
+  #site-navigation .dropdown-toggle {
+    display: none; } }
 @media (max-width: 992px) {
-  /* line 344, custom.scss */
   body .navigation-toggle {
     margin-top: -47px; }
-  /* line 347, custom.scss */
   body .col-md-3.searchbox-col {
     display: none !important; }
-  /* line 350, custom.scss */
   body #search-resultbox {
     display: none !important; } }
-/* line 356, custom.scss */
+.dropdown-menu > li > a:hover {
+  background: transparent;
+  color: #333; }
+
 .navigation-brand .brand-logo .logo {
   background-image: url(https://docs.socialveo.com/assets/socialveo/socialveo-white.png) !important; }
 
-/* line 359, custom.scss */
 body .navigation.navigation-header.site-header {
   background-image: url(https://socialveo.com/wp-content/themes/helpguru-childtheme/img/headoverlay.png) !important;
   background-color: #00adee !important; }
 
-/* line 364, custom.scss */
 body .navigation-toggle {
   background-color: #fff; }
