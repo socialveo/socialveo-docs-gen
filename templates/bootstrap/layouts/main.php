@@ -69,17 +69,18 @@ $this->beginPage();
                         <div class="menu-menu-1-container">
                             <ul id="menu-menu-1" class="nav-menu navigation-bar navigation-bar-right">
                                 
-                                <li class="menu-item"><a href="https://docs.socialveo.com">
-                                    <i class="fa fa-code"></i> Code Reference</a></li>
+                                <li class="menu-item"><a href="https://docs.socialveo.com">Code Reference</a></li>
                                 
-                                <li class="menu-item"><a href="https://socialveo.com/community/kb">
-                                    <i class="fa fa-question-circle"></i> Knowledge Base</a></li>
+                                <li class="menu-item"><a href="https://docs.socialveo.com/database-table-columns/">Database Schema</a></li>   
                                 
-                                <li class="menu-item"><a href="https://socialveo.com/community/tutorials">
-                                    <i class="fa fa-life-ring"></i> Tutorials</a></li>   
-                                
-                                <li class="menu-item"><a href="https://socialveo.com/community/forums">
-                                    <i class="fa fa-comments"></i> Forums</a></li>
+                                <li class="dropdown">
+                                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Community <span class="caret"></span></a>
+                                  <ul class="dropdown-menu">
+                                    <li><a href="https://socialveo.com/community/kb">Knowledge Base</a></li>
+                                    <li><a href="https://socialveo.com/community/tutorials">Tutorials</a></li>
+                                    <li><a href="https://socialveo.com/community/forums">Forums</a></li>
+                                  </ul>
+                                </li>
                             </ul>
                         </div>
                     </nav>
