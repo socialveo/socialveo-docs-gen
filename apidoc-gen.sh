@@ -70,6 +70,16 @@ while [[ $# -gt 0 ]]; do
     shift
 done
 
+php='/usr/bin/php'
+
+if [[ "$("$php" -v | grep '^PHP 5')" == "" ]]; then
+    php='/usr/bin/php5.6'
+    if [[ "$("$php" -v | grep '^PHP 5')" == "" ]]; then
+        (1>&2 echo "Can't find php5.6 cli")
+        exit 1
+    fi
+fi
+
 if $generate; then
     function join_src {
         local d=",$src_dir/";
@@ -84,7 +94,7 @@ if $generate; then
     dirs="$( join_src "${dirs[@]}" )"
 
     echo "php $path/apidoc api $dirs $dest"
-    php "$path/apidoc" api "$dirs" "$dest"
+    "$php" "$path/apidoc" api "$dirs" "$dest"
 
     exit_code=$?
 
