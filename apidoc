@@ -35,7 +35,14 @@ foreach ($composerAutoload as $autoload) {
 }
 
 try {
+    ob_start();
+    $tmp_argv = isset($_SERVER['argv']) ? $_SERVER['argv'] : null;
+    $_SERVER['argv'] = [
+        3 => 'main'
+    ];
     require __DIR__ . '/vendor/socialveo/socialveo/socialveo/console.php';
+    $_SERVER['argv'] = $tmp_argv;
+    ob_end_clean();
 } catch (\Exception $e) {
 }
 
